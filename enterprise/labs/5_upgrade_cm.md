@@ -419,7 +419,10 @@ harshal@shreeganesh ~/SEBC/enterprise/labs $ /usr/bin/curl -s -X GET -u harshal-
   } ]
 }harshal@shreeganesh ~/SEBC/enterprise/labs $ 
 
-## CM Database server
+## CM Database server Type
+harshal@shreeganesh ~/SEBC/enterprise/labs $ /usr/bin/curl -s -X GET -u harshal-yb:Avaya123 'http://107.23.242.117:7180/api/v14/cm/scmDbInfo' | jq '.scmDbType'
+"MYSQL"
+harshal@shreeganesh ~/SEBC/enterprise/labs $ 
 
 
 
