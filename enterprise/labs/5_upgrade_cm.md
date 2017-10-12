@@ -1,6 +1,6 @@
 # Upgrade Java
 Upgraded java version to 1.8
-
+```
 [root@ip-10-0-3-7 ~]# ll
 total 169392
 -rw-r--r--. 1 root root       130 Oct  9 20:59 host_fqdn
@@ -226,26 +226,26 @@ lrwxrwxrwx 1 root root 22 Oct 11 17:43 /usr/java/latest -> /usr/java/jdk1.8.0_14
 lrwxrwxrwx 1 root root 22 Oct 11 17:43 /usr/java/latest -> /usr/java/jdk1.8.0_144
 10.0.3.235
 lrwxrwxrwx 1 root root 22 Oct 11 17:43 /usr/java/latest -> /usr/java/jdk1.8.0_144
-
+```
 ## After installing Java update cloudera manager server file to use new Java
-
+```
 [root@ip-10-0-3-7 ~]# vi /etc/default/cloudera-scm-server 
 export JAVA_HOME="/usr/java/latest/jre/"
-
+```
 ## Restart Cloudera-scm-server service
-
+```
 [root@ip-10-0-3-7 ~]# service cloudera-scm-server restart
 Stopping cloudera-scm-server:                              [  OK  ]
 Starting cloudera-scm-server:                              [  OK  ]
 [root@ip-10-0-3-7 ~]#
-
+```
 ## Update Java Home for all the Host agents
 
 Hosts --> All Hosts --> Configuration --> Advanced --> Java Home Directory --> Update /usr/java/latest
 
 
 ## Restart agents on all the nodes
-
+```
 [root@ip-10-0-3-7 ~]# for i in `cat ~/hosts`; do echo $i; ssh $i "service cloudera-scm-agent restart";done
 10.0.3.7
 Stopping cloudera-scm-agent: [  OK  ]
@@ -263,9 +263,9 @@ Starting cloudera-scm-agent: [  OK  ]
 Stopping cloudera-scm-agent: [  OK  ]
 Starting cloudera-scm-agent: [  OK  ]
 [root@ip-10-0-3-7 ~]#
-
+```
 ## Backup the Cloudera Manager Database
-
+```
 [root@ip-10-0-3-7 ~]# mysqldump -u root -p scm > scm.sql
 Enter password: 
 [root@ip-10-0-3-7 ~]# ll
@@ -278,21 +278,23 @@ drwxr-xr-x. 3 root root      4096 Aug 29 02:13 mysql-connector-java-5.1.44
 -rw-r--r--. 1 root root       185 Oct  9 23:01 mysql-tools.repo
 -rw-r--r--  1 root root  35031784 Oct 11 17:58 scm.sql
 [root@ip-10-0-3-7 ~]#
-
+```
 ## Update CM repo to use latest version
+```
 [root@ip-10-0-3-7 ~]# vi /etc/yum.repos.d/cloudera-manager.repo
 
 baseurl = https://archive.cloudera.com/cm5/redhat/6/x86_64/cm/5/
-
+```
 ## Stop Cloudera manager server and agent
+```
 [root@ip-10-0-3-7 ~]# service cloudera-scm-server stop
 Stopping cloudera-scm-server:                              [  OK  ]
 [root@ip-10-0-3-7 ~]# service cloudera-scm-agent stop
 Stopping cloudera-scm-agent:                               [  OK  ]
 [root@ip-10-0-3-7 ~]# 
-
+```
 ## Upgrade CM rom
-
+```
 [root@ip-10-0-3-7 ~]# yum clean all
 Loaded plugins: amazon-id, rhui-lb, search-disabled-repos, security
 Cleaning repos: cloudera-manager mysql-connectors-community mysql-tools-community mysql-tools-preview mysql55-community rhui-REGION-client-config-server-6
@@ -383,28 +385,30 @@ Updated:
 Complete!
 You have new mail in /var/spool/mail/root
 [root@ip-10-0-3-7 ~]# 
-
+```
 ## STart the cloudera manager servr
+```
 [root@ip-10-0-3-7 ~]# service cloudera-scm-server start
 Starting cloudera-scm-server:                              [  OK  ]
 [root@ip-10-0-3-7 ~]# tail -f /var/log/cloudera-scm-server/cloudera-scm-server.log
-
+```
 ## Upgrade Cloudera managment agent
 Login to CM and option will be presented to upgrade agents
 
 ## API Version
+```
 harshal@shreeganesh ~/SEBC/enterprise/labs $ /usr/bin/curl -s -X GET -u harshal-yb:Avaya123 'http://107.23.242.117:7180/api/version'
 v18
 harshal@shreeganesh ~/SEBC/enterprise/labs $ 
-
+```
 ## CM Version
-
+```
 harshal@shreeganesh ~/SEBC/enterprise/labs $ /usr/bin/curl -s -X GET -u harshal-yb:Avaya123 'http://107.23.242.117:7180/api/v1/cm/version' | jq '.version'
 "5.13.0"
 harshal@shreeganesh ~/SEBC/enterprise/labs $ 
-
+```
 ## CM USers
-
+```
 harshal@shreeganesh ~/SEBC/enterprise/labs $ /usr/bin/curl -s -X GET -u harshal-yb:Avaya123 'http://107.23.242.117:7180/api/v12/users'
 {
   "items" : [ {
@@ -418,13 +422,14 @@ harshal@shreeganesh ~/SEBC/enterprise/labs $ /usr/bin/curl -s -X GET -u harshal-
     "roles" : [ "ROLE_CONFIGURATOR" ]
   } ]
 }harshal@shreeganesh ~/SEBC/enterprise/labs $ 
-
+```
 ## CM Database server Type
+```
 harshal@shreeganesh ~/SEBC/enterprise/labs $ /usr/bin/curl -s -X GET -u harshal-yb:Avaya123 'http://107.23.242.117:7180/api/v14/cm/scmDbInfo' | jq '.scmDbType'
 "MYSQL"
 harshal@shreeganesh ~/SEBC/enterprise/labs $ 
 
-
+```
 
 ## CDH Upgrade
 
