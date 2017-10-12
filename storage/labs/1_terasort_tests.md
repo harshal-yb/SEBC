@@ -1,7 +1,7 @@
 # Create an end-user Linux account named with your GitHub handle
 
 ## Make sure this Linux account is added to all cluster nodes
-///
+```
 [root@ip-10-0-3-7 cloudera-parcel]# for i in `cat ~/hosts`; do echo $i; ssh $i "useradd harshal-yb";done
 10.0.3.7
 10.0.3.37
@@ -55,9 +55,9 @@ Retype new password: Avaya123
 Changing password for user harshal-yb.
 passwd: all authentication tokens updated successfully.
 [root@ip-10-0-3-7 cloudera-parcel]# 
-
-///
+```
 ## Create an HDFS directory under /user
+```
 [root@ip-10-0-3-7 cloudera-parcel]# hdfs dfs -ls /
 Found 2 items
 drwxrwxrwt   - hdfs supergroup          0 2017-10-10 16:05 /tmp
@@ -80,7 +80,7 @@ drwxrwxr-t   - hive       hive                0 2017-10-10 16:04 /user/hive
 drwxrwxr-x   - hue        hue                 0 2017-10-10 16:05 /user/hue
 drwxrwxr-x   - oozie      oozie               0 2017-10-10 16:05 /user/oozie
 [root@ip-10-0-3-7 cloudera-parcel]# 
-
+```
 
 # Run the following exercises under this user account
 
@@ -93,8 +93,7 @@ drwxrwxr-x   - oozie      oozie               0 2017-10-10 16:05 /user/oozie
 /user/harshal-yb
 ### Use the time command to report the job's duration
 time
-
-///
+```
 [harshal-yb@ip-10-0-3-7 ~]$ time /usr/bin/hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar teragen -Dmapreduce.job.maps=4 -Ddfs.block.size=33554432 10240000 /user/harshal-yb/teragen
 17/10/10 17:23:56 INFO client.RMProxy: Connecting to ResourceManager at ip-10-0-3-7.ec2.internal/10.0.3.7:8032
 17/10/10 17:23:57 INFO terasort.TeraSort: Generating 10240000 using 4
@@ -154,15 +153,14 @@ real	0m28.504s
 user	0m6.048s
 sys	0m0.325s
 [harshal-yb@ip-10-0-3-7 ~]$ 
-///
+```
 # Run the terasort command on this file
 
 ### Use the time command to report the job's duration
 time
 ### Land the result under your user's home directory
 /user/harshal-yb/terasort/
-
-///
+```
 [harshal-yb@ip-10-0-3-7 ~]$ time /usr/bin/hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar terasort /user/harshal-yb/teragen/ /user/harshal-yb/terasort/
 17/10/10 17:31:44 INFO terasort.TeraSort: starting
 17/10/10 17:31:45 INFO input.FileInputFormat: Total input paths to process : 4
@@ -270,5 +268,4 @@ real	1m0.217s
 user	0m7.763s
 sys	0m0.327s
 [harshal-yb@ip-10-0-3-7 ~]$ 
-///
-
+```
