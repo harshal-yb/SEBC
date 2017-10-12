@@ -1,14 +1,16 @@
 # Cluster Nodes
+```
 IP				Function
 10.0.3.7		Cloudera Manager
 10.0.3.37		Datanode
 10.0.3.90		Datanode
 10.0.3.95		Datanode
 10.0.3.235		Datanode
-
+```
 
 # Setup SSH Keys
-<code>
+
+```
 [root@ip-10-0-3-7 ~]# ssh-keygen 
 Generating public/private rsa key pair.
 Enter file in which to save the key (/root/.ssh/id_rsa): 
@@ -30,11 +32,12 @@ The key's randomart image is:
 |  o   o. * = o   |
 |   .E  .= . .    |
 +-----------------+
-</code>
+```
+
 Copied the root public key to all the nodes in /root/.ssh/authorized_keys file
 
 Added the IPs of all noeds to hosts file
-<code>
+```
 [root@ip-10-0-3-235 ~]# cat hosts 
 10.0.3.7
 10.0.3.37
@@ -42,11 +45,12 @@ Added the IPs of all noeds to hosts file
 10.0.3.95
 10.0.3.235
 [root@ip-10-0-3-235 ~]# 
-</code>
+```
 
+## Check vm.swappiness on all your nodes
 
-##Check vm.swappiness on all your nodes
-<code> [root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "cat /proc/sys/vm/swappiness";done
+```
+[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "cat /proc/sys/vm/swappiness";done
 10.0.3.7
 60
 10.0.3.37
@@ -58,9 +62,12 @@ Added the IPs of all noeds to hosts file
 10.0.3.235
 60
 [root@ip-10-0-3-7 ~]# 
-</code>
-##Set the value to 1 if necessary
-<code>[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "echo "vm.swappiness = 1" >> /etc/sysctl.conf; sysctl vm.swappiness=1";done
+```
+
+## Set the value to 1 if necessary
+
+```
+[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "echo "vm.swappiness = 1" >> /etc/sysctl.conf; sysctl vm.swappiness=1";done
 10.0.3.7
 vm.swappiness = 1
 10.0.3.37
@@ -84,11 +91,12 @@ vm.swappiness = 1
 10.0.3.235
 1
 [root@ip-10-0-3-7 ~]# 
+```
 
+## Show the mount attributes of your volume(s)
 
-</code>
-##Show the mount attributes of your volume(s)
-<code>[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "mount";done
+```
+[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "mount";done
 10.0.3.7
 /dev/xvda1 on / type ext4 (rw)
 proc on /proc type proc (rw)
@@ -129,9 +137,12 @@ devpts on /dev/pts type devpts (rw,gid=5,mode=620)
 tmpfs on /dev/shm type tmpfs (rw,rootcontext="system_u:object_r:tmpfs_t:s0")
 none on /proc/sys/fs/binfmt_misc type binfmt_misc (rw)
 [root@ip-10-0-3-7 ~]# 
-</code>
-#If you have ext-based volumes, list the reserve space setting
-<code>[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "tune2fs -l /dev/xvda1 | grep \"Reserved block count\"";done
+```
+
+# If you have ext-based volumes, list the reserve space setting
+
+```
+[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "tune2fs -l /dev/xvda1 | grep \"Reserved block count\"";done
 10.0.3.7
 Reserved block count:     131046
 10.0.3.37
@@ -143,10 +154,11 @@ Reserved block count:     131046
 10.0.3.235
 Reserved block count:     131046
 [root@ip-10-0-3-7 ~]# 
+```
 
-</code>
-##Disable transparent hugepage support
-<code>[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "cat /sys/kernel/mm/transparent_hugepage/enabled";done
+## Disable transparent hugepage support
+```
+[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "cat /sys/kernel/mm/transparent_hugepage/enabled";done
 10.0.3.7
 [always] madvise never
 10.0.3.37
@@ -157,9 +169,12 @@ Reserved block count:     131046
 [always] madvise never
 10.0.3.235
 [always] madvise never
-[root@ip-10-0-3-7 ~]# </code>
-##List your network interface configuration
-<code>[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "ifconfig eth0";done
+[root@ip-10-0-3-7 ~]# 
+```
+
+## List your network interface configuration
+```
+[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "ifconfig eth0";done
 10.0.3.7
 eth0      Link encap:Ethernet  HWaddr 0E:27:99:F8:56:A0  
           inet addr:10.0.3.7  Bcast:10.0.3.255  Mask:255.255.255.0
@@ -216,9 +231,10 @@ eth0      Link encap:Ethernet  HWaddr 0E:8D:0B:A9:9F:54
           Interrupt:144 
 
 [root@ip-10-0-3-7 ~]# 
-</code>
-##Show that forward and reverse host lookups are correctly resolved
-<code>
+```
+
+## Show that forward and reverse host lookups are correctly resolved
+```
 [root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; nslookup $i;done | grep name
 7.3.0.10.in-addr.arpa	name = ip-10-0-3-7.ec2.internal.
 37.3.0.10.in-addr.arpa	name = ip-10-0-3-37.ec2.internal.
@@ -276,11 +292,12 @@ Name:	ip-10-0-3-235.ec2.internal
 Address: 10.0.3.235
 
 [root@ip-10-0-3-7 ~]# 
+```
 
-</code>
-##Show the nscd service is running
+## Show the nscd service is running
 
-<code></code>[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "service nscd status";done
+```
+[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "service nscd status";done
 10.0.3.7
 nscd: unrecognized service
 10.0.3.37
@@ -310,9 +327,11 @@ nscd (pid 25015) is running...
 Starting nscd: [  OK  ]
 nscd (pid 25103) is running...
 [root@ip-10-0-3-7 ~]# 
+```
 
 ## Show the ntpd service is running
-<code>[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "service ntpd status";done
+```
+[root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i "service ntpd status";done
 10.0.3.7
 ntpd is stopped
 10.0.3.37
@@ -339,4 +358,5 @@ ntpd (pid  25095) is running...
 10.0.3.235
 Starting ntpd: [  OK  ]
 ntpd (pid  25183) is running...
-[root@ip-10-0-3-7 ~]#</code>		
+[root@ip-10-0-3-7 ~]#
+```		
