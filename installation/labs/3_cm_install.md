@@ -1,5 +1,6 @@
 # Install Cloudera Manager
 ## Install Oracle JDK
+```
 [root@ip-10-0-3-7 ~]# wget http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.rpm?AuthParam=1507587837_cb386185e667146d030ed60b916fa524
 --2017-10-09 22:23:35--  http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.rpm?AuthParam=1507587837_cb386185e667146d030ed60b916fa524
 Resolving download.oracle.com... 23.215.130.50, 23.215.130.65
@@ -14,6 +15,7 @@ Saving to: “jdk-8u144-linux-x64.rpm?AuthParam=1507587837_cb386185e667146d030ed
 
 [root@ip-10-0-3-7 ~]# mv jdk-8u144-linux-x64.rpm\?AuthParam\=1507587837_cb386185e667146d030ed60b916fa524 jdk-8u144-linux-x64.rpm
 mv: overwrite `jdk-8u144-linux-x64.rpm'? y
+
 [root@ip-10-0-3-7 ~]# yum install jdk-8u144-linux-x64.rpm 
 Loaded plugins: amazon-id, rhui-lb, search-disabled-repos, security
 Setting up Install Process
@@ -61,13 +63,16 @@ Installed:
 
 Complete!
 [root@ip-10-0-3-7 ~]# 
-
+```
 # Install a supported JDBC connector on all nodes
+```
 wget http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.44.tar.gz
 tar -zxvf mysql-connector-java-5.1.44.tar.gz 
 mkdir -p /usr/share/java/
 cp mysql-connector-java-5.1.44/mysql-connector-java-5.1.44-bin.jar /usr/share/java/mysql-connector-java.jar
+```
 ##Create the databases and access grants you will need
+```
 [root@ip-10-0-3-7 ~]# mysql -u root -p
 Enter password: 
 Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -121,9 +126,10 @@ Query OK, 0 rows affected (0.00 sec)
 
 
 mysql> 
-
+```
 ## Configure Cloudera Manager to connect to the database
 ### Download Cloudera Manager repo
+```
 [root@ip-10-0-3-7 ~]# cd /etc/yum.repos.d/
 [root@ip-10-0-3-7 yum.repos.d]# wget https://archive.cloudera.com/cm5/redhat/6/x86_64/cm/cloudera-manager.repo
 --2017-10-09 23:33:16--  https://archive.cloudera.com/cm5/redhat/6/x86_64/cm/cloudera-manager.repo
@@ -138,12 +144,15 @@ Saving to: “cloudera-manager.repo”
 2017-10-09 23:33:17 (18.4 MB/s) - “cloudera-manager.repo” saved [290/290]
 
 [root@ip-10-0-3-7 yum.repos.d]# 
+```
 ### Edit repo to install 5.9.3 CM
 From :
 baseurl=https://archive.cloudera.com/cm5/redhat/6/x86_64/cm/5/
 To :
 baseurl=https://archive.cloudera.com/cm5/redhat/6/x86_64/cm/5.9.3/
+
 ### Install Cloudera Manager rpms
+```
 [root@ip-10-0-3-7 yum.repos.d]# yum install cloudera-manager-daemons cloudera-manager-server
 Loaded plugins: amazon-id, rhui-lb, search-disabled-repos, security
 Repository mysql-tools-preview is listed more than once in the configuration
@@ -196,18 +205,13 @@ Installed:
 
 Complete!
 [root@ip-10-0-3-7 yum.repos.d]# 
-
-/usr/share/cmf/schema/scm_prepare_database.sh mysql rman rman rman_password -h ip-10-0-3-7.ec2.internal
-/usr/share/cmf/schema/scm_prepare_database.sh mysql amon amon amon_password -h ip-10-0-3-7.ec2.internal
-/usr/share/cmf/schema/scm_prepare_database.sh mysql hive hive hive_password -h ip-10-0-3-7.ec2.internal
-/usr/share/cmf/schema/scm_prepare_database.sh mysql sentry sentry sentry_password -h ip-10-0-3-7.ec2.internal
-/usr/share/cmf/schema/scm_prepare_database.sh mysql hue hue hue_password -h ip-10-0-3-7.ec2.internal
-/usr/share/cmf/schema/scm_prepare_database.sh mysql oozie oozie oozie_password -h ip-10-0-3-7.ec2.internal
-
+```
+/usr/share/cmf/schema/scm_prepare_database.sh mysql scm scm scm_password -h ip-10-0-3-7.ec2.internal
 
 ### Start your Cloudera Manager server -- debug as necessary
+```
 [root@ip-10-0-3-7 ~]# service cloudera-scm-server start
 Starting cloudera-scm-server:                              [  OK  ]
 [root@ip-10-0-3-7 ~]# tail -f /var/log/cloudera-scm-server/cloudera-scm-server.log 
-
+```
     Do not continue until you can browse your CM instance at port 7180

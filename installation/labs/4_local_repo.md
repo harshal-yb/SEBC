@@ -1,4 +1,5 @@
 #Local Repo
+```
 [root@ip-10-0-3-7 ~]# yum install httpd
 Loaded plugins: amazon-id, rhui-lb, search-disabled-repos, security
 Setting up Install Process
@@ -8,8 +9,9 @@ You have mail in /var/spool/mail/root
 [root@ip-10-0-3-7 ~]# service httpd start
 Starting httpd:                                            [  OK  ]
 [root@ip-10-0-3-7 ~]# 
-
+```
 # Download the Parcel and Manifest file
+```
 [root@ip-10-0-3-7 ~]# mkdir /var/www/html//cloudera-parcel
 [root@ip-10-0-3-7 ~]# cd /var/www/html/cloudera-parcel/
 [root@ip-10-0-3-7 cloudera-parcel]# wget https://archive.cloudera.com/accumulo-c5/parcels/latest/ACCUMULO-1.7.2-5.5.0.ACCUMULO5.5.0.p0.8-el6.parcel
@@ -53,6 +55,7 @@ Saving to: “manifest.json”
 
 [root@ip-10-0-3-7 cloudera-parcel]# 
 [root@ip-10-0-3-7 /]# chmod -R ugo+rX /var/www/html/cloudera-parcel/
-
+```
 # Add the local URL to Cloudera Manager's parcel configuration
+
 http://54.159.162.169/cloudera-parcel/
