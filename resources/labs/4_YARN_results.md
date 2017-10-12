@@ -1,4 +1,5 @@
 ## Looking at the reasults teragen works faster with 1024 MB container size where as terasort works better with 512 MB container size
+```
 [harshal-yb@ip-10-0-3-7 ~]$ ./YARNtest.sh 
 Testing loop started on Tue Oct 10 21:39:48 UTC 2017
 
@@ -24,4 +25,4 @@ Deleted /user/harshal-yb/results/ts-10GB-8-1-1024
 Testing loop ended on Tue Oct 10 21:47:04 UTC 2017
 [harshal-yb@ip-10-0-3-7 ~]$ 
 
-
+```
