@@ -302,6 +302,7 @@ Re-enter KDC database master key to verify:
 ```
 
 ## Create cloudera manager user
+```
 [root@ip-10-0-3-7 ~]# kadmin.local 
 Authenticating as principal root/admin@HARSHAL.COM with password.
 kadmin.local:  addprinc cloudera-scm@HARSHAL.COM
@@ -309,16 +310,17 @@ WARNING: no policy specified for cloudera-scm@HARSHAL.COM; defaulting to no poli
 Enter password for principal "cloudera-scm@HARSHAL.COM": 
 Re-enter password for principal "cloudera-scm@HARSHAL.COM": 
 Principal "cloudera-scm@HARSHAL.COM" created.
-
+```
 ## Add privileges for cloudera-scm user to add principles in ACL
+```
 [root@ip-10-0-3-7 ~]# vi /var/kerberos/krb5kdc/kadm5.acl 
 [root@ip-10-0-3-7 ~]# cat /var/kerberos/krb5kdc/kadm5.acl
 */admin@HARSHAL.COM	*
 cloudera-scm@HARSHAL.COM	*
 [root@ip-10-0-3-7 ~]# 
-
+```
 ## Add password policy to the kerberos database
-
+```
 [root@ip-10-0-3-7 ~]# kadmin.local 
 Authenticating as principal root/admin@HARSHAL.COM with password.
 kadmin.local:  addpol admin
@@ -326,15 +328,15 @@ kadmin.local:  addpol users
 kadmin.local:  addpol hosts
 kadmin.local:  exit
 [root@ip-10-0-3-7 ~]# 
-
+```
 ## Start Kerberos services on KDC server
-
+```
 [root@ip-10-0-3-7 ~]# service krb5kdc start
 Starting Kerberos 5 KDC:                                   [  OK  ]
 [root@ip-10-0-3-7 ~]# service kadmin start
 Starting Kerberos 5 Admin Server:                          [  OK  ]
 [root@ip-10-0-3-7 ~]# 
-
+```
 ## Enable Kerberos on CM
 Administration --> Security --> Enable Kerberos 
 
