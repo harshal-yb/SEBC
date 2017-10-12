@@ -262,18 +262,22 @@ Query OK, 0 rows affected (0.00 sec)
 
 mysql> 
 
+```
 Edited /etc/my.cnf Added following lines to [mysqld]
+```
 log-bin=mysql-bin
 server-id=1
 binlog_format=row
-
+```
 Restarted mysqld service 
+```
 [root@ip-10-0-3-7 ~]# service mysqld restart
 Stopping mysqld:                                           [  OK  ]
 Starting mysqld:                                           [  OK  ]
 [root@ip-10-0-3-7 ~]# 
-
+```
 ##In a second terminal session, log into the MySQL master and show its status:
+```
 [root@ip-10-0-3-7 ~]# mysql -u root -p
 Enter password: 
 Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -304,9 +308,11 @@ mysql>
 
 ## Login to the replica server and configure a connection to the master:
 Edited /etc/my.cnf on Slave server Added following lines to [mysqld]
+```
 server-id=2
-
+```
 Restarted mysqld service 
+```
 [root@ip-10-0-3-37 ~]# service mysqld restart
 Stopping mysqld:                                           [  OK  ]
 Starting mysqld:                                           [  OK  ]
@@ -376,6 +382,6 @@ Master_SSL_Verify_Server_Cert: No
 1 row in set (0.00 sec)
 
 mysql> 
-
+```
 ##Review your log (/var/log/mysqld.log) for errors.
 No error reported on master or slave mysql instance	
