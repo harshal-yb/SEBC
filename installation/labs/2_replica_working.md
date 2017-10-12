@@ -1,7 +1,6 @@
-#Installing MySQL on CentOS 6.9
-##Download and implement the official MySQL repo
-<code>
-
+# Installing MySQL on CentOS 6.9
+## Download and implement the official MySQL repo
+```
 [root@ip-10-0-3-7 ~]# for i in `cat hosts`; do echo $i; ssh $i " wget https://dev.mysql.com/get/mysql57-community-release-el6-11.noarch.rpm;rpm -ivh mysql57-community-release-el6-11.noarch.rpm";done
 #10.0.3.7
 ssh: Could not resolve hostname #10.0.3.7: Name or service not known
@@ -25,12 +24,12 @@ Saving to: “mysql57-community-release-el6-11.noarch.rpm”
 warning: mysql57-community-release-el6-11.noarch.rpm: Header V3 DSA/SHA1 Signature, key ID 5072e1f5: NOKEY
 Preparing...                ##################################################
 mysql57-community-release   ##################################################
-
-
+```
 Edited /etc/yum.repose.d/mysql-community.repo 
 Disabled 5.7 Repo and enabled 5.5
 
 # Enable the repo to install MySQL 5.5
+```
 [mysql55-community]
 name=MySQL 5.5 Community Server
 baseurl=http://repo.mysql.com/yum/mysql-5.5-community/el/6/$basearch/
@@ -44,10 +43,9 @@ baseurl=http://repo.mysql.com/yum/mysql-5.7-community/el/6/$basearch/
 enabled='0'
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
-
-</code>
+```
 ## Install the mysql package on all nodes
-<code>
+```
 [root@ip-10-0-3-7]# for i in `cat hosts`; do echo $i; ssh $i "yum install mysql -y";done
 10.0.3.7
 Loaded plugins: amazon-id, rhui-lb, search-disabled-repos, security
@@ -67,9 +65,9 @@ Resolving Dependencies
 ---> Package mysql-community-common.x86_64 0:5.5.57-2.el6 will be installed
 ---> Package mysql-community-libs-compat.x86_64 0:5.5.57-2.el6 will be obsoleting
 --> Finished Dependency Resolution
-</code>
-##Install mysql-server on the server and replica nodes
-<code>
+```
+## Install mysql-server on the server and replica nodes
+```
 [root@ip-10-0-3-7 ~]# yum install mysql-server
 Loaded plugins: amazon-id, rhui-lb, search-disabled-repos, security
 Setting up Install Process
@@ -125,17 +123,16 @@ Please report any problems at http://bugs.mysql.com/
                                                            [  OK  ]
 Starting mysqld:                                           [  OK  ]
 [root@ip-10-0-3-7 ~]# 
+```
 
+### Download and copy the JDBC connector to all nodes
 
-</code>
-###Download and copy the JDBC connector to all nodes.
-<code></code>
 You should not need to build a /etc/my.cnf file to start your MySQL server
-<code></code>
-    You will have to modify it to support replication. Check MySQL documentation.
 
-##Start the mysqld service.
-<code>
+You will have to modify it to support replication. Check MySQL documentation.
+
+## Start the mysqld service.
+```
 [root@ip-10-0-3-7 ~]# service mysqld start;chkconfig mysqld on
 Initializing MySQL database:  171009 21:42:41 [Note] Ignoring --secure-file-priv value as server is running with --bootstrap.
 171009 21:42:41 [Note] /usr/sbin/mysqld (mysqld 5.5.57) starting as process 25862 ...
@@ -163,17 +160,13 @@ Please report any problems at http://bugs.mysql.com/
 Starting mysqld:                                           [  OK  ]
 [root@ip-10-0-3-7 ~]# 
 
-</code>
-##Use /usr/bin/mysql_secure_installation to:
-<code>
+```
+## Use /usr/bin/mysql_secure_installation to:
+```
 [root@ip-10-0-3-7 ~]# /usr/bin/mysql_secure_installation
-
-
-
 
 NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MySQL
       SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
-
 
 In order to log into MySQL to secure it, we'll need the current
 password for the root user.  If you've just installed MySQL, and
@@ -233,18 +226,17 @@ All done!  If you've completed all of the above steps, your MySQL
 installation should now be secure.
 
 Thanks for using MySQL!
+```
 
-
-[root@ip-10-0-3-7 ~]# 
-
+```
 [root@ip-10-0-3-7 ~]# service mysqld restart
 Stopping mysqld:                                           [  OK  ]
 Starting mysqld:                                           [  OK  ]
 [root@ip-10-0-3-7 ~]# 
-</code>
+```
 
-##On the master MySQL node, grant replication privileges for your replica node:
-
+## On the master MySQL node, grant replication privileges for your replica node:
+```
 [root@ip-10-0-3-7 ~]# mysql -u root -p
 Enter password: 
 Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -308,9 +300,9 @@ mysql> UNLOCK TABLES;
 Query OK, 0 rows affected (0.00 sec)
 
 mysql> 
+```
 
-
-##Login to the replica server and configure a connection to the master:
+## Login to the replica server and configure a connection to the master:
 Edited /etc/my.cnf on Slave server Added following lines to [mysqld]
 server-id=2
 
