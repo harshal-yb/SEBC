@@ -1,3 +1,4 @@
+```
 [root@ip-10-0-3-7 UnlimitedJCEPolicyJDK8]# kadmin.local 
 Authenticating as principal root/admin@HARSHAL.COM with password.
 kadmin.local:  addprinc harshal@HARSHAL.COM
@@ -17,4 +18,4 @@ Valid starting     Expires            Service principal
 10/11/17 22:00:46  10/12/17 22:00:46  krbtgt/HARSHAL.COM@HARSHAL.COM
 	renew until 10/18/17 22:00:46
 [harshal@ip-10-0-3-7 ~]$ 
-
+```
