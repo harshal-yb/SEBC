@@ -22,8 +22,9 @@ INFO  : OK
 +-----------+--+
 No rows selected (2.738 seconds)
 0: jdbc:hive2://ip-10-0-3-7.ec2.internal:1000> 
-
-
+```
+## After adding sentry admin group
+```
 0: jdbc:hive2://ip-10-0-3-7.ec2.internal:1000> SHOW TABLES;
 INFO  : Compiling command(queryId=hive_20171012000606_bc515f9e-b249-426c-931a-d3fbe8e041b5): SHOW TABLES
 INFO  : Semantic Analysis Completed
@@ -43,7 +44,9 @@ INFO  : OK
 +------------+--+
 4 rows selected (0.309 seconds)
 0: jdbc:hive2://ip-10-0-3-7.ec2.internal:1000> 
-
+```
+## Testing Sentry access for users
+```
 [root@ip-10-0-3-7 ~]# su - george
 [george@ip-10-0-3-7 ~]$ kinit 
 Password for george@HARSHAL.COM: 
@@ -75,11 +78,8 @@ INFO  : OK
 4 rows selected (0.338 seconds)
 0: jdbc:hive2://ip-10-0-3-7.ec2.internal:1000> Closing: 0: jdbc:hive2://ip-10-0-3-7.ec2.internal:10000/default;principal=hive/ip-10-0-3-7.ec2.internal@HARSHAL.COM
 [george@ip-10-0-3-7 ~]$ logout
-
-
-
-
-
+```
+```
 [root@ip-10-0-3-7 ~]# su - ferdinand
 [ferdinand@ip-10-0-3-7 ~]$ kinit
 Password for ferdinand@HARSHAL.COM: 

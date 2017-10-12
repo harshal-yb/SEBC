@@ -1,5 +1,5 @@
 ## Have Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files 8 Download and move to /usr/java/latest/jre/lib/security/
-
+```
 [root@ip-10-0-3-7 ~]# wget http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip?AuthParam=1507758286_8fa29483e1df974612126d651e2b060f
 --2017-10-11 21:43:05--  http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip?AuthParam=1507758286_8fa29483e1df974612126d651e2b060f
 Resolving download.oracle.com... 23.215.130.99, 23.215.130.114
@@ -13,8 +13,6 @@ Saving to: “jce_policy-8.zip?AuthParam=1507758286_8fa29483e1df974612126d651e2b
 2017-10-11 21:43:05 (407 MB/s) - “jce_policy-8.zip?AuthParam=1507758286_8fa29483e1df974612126d651e2b060f” saved [8409/8409]
 
 You have new mail in /var/spool/mail/root
-[root@ip-10-0-3-7 ~]# rm jce_policy-8.zip
-rm: remove regular file `jce_policy-8.zip'? y
 [root@ip-10-0-3-7 ~]# mv jce_policy-8.zip\?AuthParam\=1507758286_8fa29483e1df974612126d651e2b060f jce_policy-8.zip
 [root@ip-10-0-3-7 ~]# unzip jce_policy-8.zip 
 Archive:  jce_policy-8.zip
@@ -23,7 +21,8 @@ Archive:  jce_policy-8.zip
   inflating: UnlimitedJCEPolicyJDK8/README.txt  
   inflating: UnlimitedJCEPolicyJDK8/US_export_policy.jar  
 [root@ip-10-0-3-7 ~]# cd UnlimitedJCEPolicyJDK8/
-
+```
+```
 root@ip-10-0-3-7 UnlimitedJCEPolicyJDK8]# for i in `cat ~/hosts`; do echo $i; scp *.jar $i:/usr/java/latest/jre/lib/security/;done
 10.0.3.7
 local_policy.jar                                                                                                                      100% 3035     3.0KB/s   00:00    
@@ -41,10 +40,10 @@ US_export_policy.jar                                                            
 local_policy.jar                                                                                                                      100% 3035     3.0KB/s   00:00    
 US_export_policy.jar                                                                                                                  100% 3023     3.0KB/s   00:00    
 [root@ip-10-0-3-7 UnlimitedJCEPolicyJDK8]#
-
-## Restart all the ser
+```
 
 ## Install Kerberos server on One of the node which will server as KDC
+```
 [root@ip-10-0-3-7 ~]# yum -y install krb5-server
 Loaded plugins: amazon-id, rhui-lb, search-disabled-repos, security
 Setting up Install Process
@@ -81,9 +80,10 @@ Installed:
 
 Complete!
 [root@ip-10-0-3-7 ~]# 
- 
+``` 
 
 ## Install Kerberos packages on all the nodes
+```
 [root@ip-10-0-3-7 ~]# for i in `cat ~/hosts`; do echo $i; ssh $i "yum -y install krb5-workstation krb5-libs krb5-auth-dialog";done
 10.0.3.7
 Loaded plugins: amazon-id, rhui-lb, search-disabled-repos, security
@@ -224,10 +224,10 @@ Transaction Summary
 ================================================================================
 Install      33 Package(s)
 
-
+```
 
 ## edit /var/kerberos/krb5kdc/kdc.conf change   REALM and add max_life and max_rebewable
-
+```
 [kdcdefaults]
  kdc_ports = 88
  kdc_tcp_ports = 88
@@ -242,8 +242,9 @@ Install      33 Package(s)
   max_life = 1d
   max_renewable_life = 7d
  }
-
+```
 ## Edit /etc/krb5.conf file as below
+```
 [root@ip-10-0-3-7 ~]# vi /etc/krb5.conf 
 [root@ip-10-0-3-7 ~]# cat /etc/krb5.conf 
 [logging]
@@ -271,9 +272,9 @@ Install      33 Package(s)
  .example.com = HARSHAL.COM
  example.com = HARSHAL.COM
 [root@ip-10-0-3-7 ~]# 
-
+```
 ## Copy the /etc/krb5.conf to all the clients
-
+```
 [root@ip-10-0-3-7 ~]# for i in `cat ~/hosts`; do echo $i; scp /etc/krb5.conf $i:/etc/;done
 10.0.3.7
 krb5.conf                                                                                                                             100%  556     0.5KB/s   00:00    
@@ -286,8 +287,9 @@ krb5.conf                                                                       
 10.0.3.235
 krb5.conf                                                                                                                             100%  556     0.5KB/s   00:00    
 [root@ip-10-0-3-7 ~]# 
-
+```
 ## Create Kerberos Database
+```
 [root@ip-10-0-3-7 ~]# /usr/sbin/kdb5_util create -s
 Loading random data
 Initializing database '/var/kerberos/krb5kdc/principal' for realm 'HARSHAL.COM',
@@ -297,7 +299,7 @@ It is important that you NOT FORGET this password.
 Enter KDC database master key: 
 Re-enter KDC database master key to verify: 
 [root@ip-10-0-3-7 ~]# 
-
+```
 
 ## Create cloudera manager user
 [root@ip-10-0-3-7 ~]# kadmin.local 

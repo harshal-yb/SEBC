@@ -2,6 +2,7 @@
 CM --> Cluster --> Add Service --> Sentry follow the Wizard
 
 ## Create a Keytab for hdfs
+```
 [root@ip-10-0-3-7 UnlimitedJCEPolicyJDK8]# kadmin.local 
 Authenticating as principal root/admin@HARSHAL.COM with password.
 kadmin.local:  xst -norandkey -k hdfs.keytab hdfs/ip-10-0-3-7.ec2.internal@HARSHAL.COM HTTP/ip-10-0-3-7.ec2.internal@HARSHAL.COM
@@ -30,16 +31,16 @@ Valid starting     Expires            Service principal
 10/11/17 22:07:58  10/12/17 22:07:58  krbtgt/HARSHAL.COM@HARSHAL.COM
 	renew until 10/18/17 22:07:58
 [harshal@ip-10-0-3-7 ~]$ 
-
+```
 ## Setting Hive Warehouse Directory Permissions
-
+```
 [harshal@ip-10-0-3-7 ~]$ hdfs dfs -chmod -R 771 /user/hive/warehouse
 [harshal@ip-10-0-3-7 ~]$ hdfs dfs -chown -R hive:hive /user/hive/warehouse
 [harshal@ip-10-0-3-7 ~]$ hdfs dfs -ls /user/hive
 Found 1 items
 drwxrwx--t   - hive hive          0 2017-10-11 20:27 /user/hive/warehouse
 [harshal@ip-10-0-3-7 ~]$ 
-
+```
 ## Block the Hive CLI user from accessing the Hive metastore:
 CM --> Hive --> Configuration --> search for Hive Metastore Access Control and Proxy User Groups Override --> add hive and hue --> save
  
@@ -50,6 +51,7 @@ CM --> Hive --> Configuration -->  Hive (Service-Wide) -->   Enable Sentry --> s
 Enable Stored Notifications in Database -- enabled it
 
 ## Created Group sentry test on all server
+```
 [root@ip-10-0-3-7 ~]# for i in `cat ~/hosts`; do echo $i; ssh $i "groupadd sentrytest"; done
 10.0.3.7
 10.0.3.37
@@ -57,9 +59,9 @@ Enable Stored Notifications in Database -- enabled it
 10.0.3.95
 10.0.3.235
 [root@ip-10-0-3-7 ~]#
-
+```
 ## User harshal Added to group sentrytest
-
+```
 [root@ip-10-0-3-7 ~]# for i in `cat ~/hosts`; do echo $i; ssh $i "usermod -G sentrytest harshal"; done
 10.0.3.7
 10.0.3.37
@@ -78,15 +80,13 @@ uid=502(harshal) gid=502(harshal) groups=503(sentrytest),502(harshal)
 10.0.3.235
 uid=502(harshal) gid=502(harshal) groups=503(sentrytest),502(harshal)
 [root@ip-10-0-3-7 ~]# 
-
+```
 ## Added group sentry to the sentry.service.admin.group list 
 restarted sentry hive hue services
 
 ## Login as user harshal and get kerberos ticket
-
+```
 [root@ip-10-0-3-7 ~]# su - harshal
-[harshal@ip-10-0-3-7 ~]$ kdestroty
--bash: kdestroty: command not found
 [harshal@ip-10-0-3-7 ~]$ kdestroy 
 [harshal@ip-10-0-3-7 ~]$ klist
 klist: No credentials cache found (ticket cache FILE:/tmp/krb5cc_502)
@@ -100,9 +100,9 @@ Valid starting     Expires            Service principal
 10/11/17 23:53:50  10/12/17 23:53:50  krbtgt/HARSHAL.COM@HARSHAL.COM
 	renew until 10/18/17 23:53:50
 [harshal@ip-10-0-3-7 ~]$ 
-
+```
 ## Test access for user harshal
-
+```
 [harshal@ip-10-0-3-7 ~]$ beeline 
 Beeline version 1.1.0-cdh5.13.0 by Apache Hive
 beeline> !connect jdbc:hive2://ip-10-0-3-7.ec2.internal:10000/default;principal=hive/ip-10-0-3-7.ec2.internal@HARSHAL.COM
@@ -169,7 +169,7 @@ No rows affected (0.168 seconds)
 ```
 
 ## Added 2 groups selector and inserters
-
+```
 [root@ip-10-0-3-7 ~]# for i in `cat ~/hosts`; do echo $i; ssh $i "groupadd selector"; done
 10.0.3.7
 10.0.3.37
@@ -183,9 +183,9 @@ No rows affected (0.168 seconds)
 10.0.3.95
 10.0.3.235
 [root@ip-10-0-3-7 ~]# 
-
+```
 ## Added user to each of the above group
-
+```
 [root@ip-10-0-3-7 ~]# for i in `cat ~/hosts`; do echo $i; ssh $i "useradd -u 1100 -g selector george"; done
 10.0.3.7
 10.0.3.37
@@ -199,9 +199,9 @@ No rows affected (0.168 seconds)
 10.0.3.95
 10.0.3.235
 [root@ip-10-0-3-7 ~]# 
-
+```
 ## Addd principle in kerberos databases
-
+```
 [root@ip-10-0-3-7 ~]# kadmin.local 
 Authenticating as principal root/admin@HARSHAL.COM with password.
 kadmin.local:  add_principal george
@@ -215,9 +215,9 @@ Enter password for principal "ferdinand@HARSHAL.COM":
 Re-enter password for principal "ferdinand@HARSHAL.COM": 
 Principal "ferdinand@HARSHAL.COM" created.
 kadmin.local:  quit
-
+```
 ## Add sentry roles and grant privileges 
-
+```
 [root@ip-10-0-3-7 ~]# su - harshal
 [harshal@ip-10-0-3-7 ~]$ beeline 
 Beeline version 1.1.0-cdh5.13.0 by Apache Hive
@@ -299,7 +299,7 @@ INFO  : Completed executing command(queryId=hive_20171012001919_cf8a9994-cd40-42
 INFO  : OK
 No rows affected (0.093 seconds)
 0: jdbc:hive2://ip-10-0-3-7.ec2.internal:1000> 
-
+```
 ## Test the access
 
 
