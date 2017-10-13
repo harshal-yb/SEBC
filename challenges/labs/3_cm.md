@@ -81,6 +81,7 @@ harshal@shreeganesh ~/.ssh $ curl -u admin:admin 'http://54.173.79.146:7180/api/
     "totalPhysMemBytes" : 15799816192
   } ]
 }harshal@shreeganesh ~/.ssh $ 
+```
 
 ## Cluster Services using API
 ```
@@ -288,5 +289,4 @@ harshal@shreeganesh ~/.ssh $ curl -u admin:admin 'http://54.173.79.146:7180/api/
   } ]
 }harshal@shreeganesh ~/.ssh $ 
 
-```
 ```
